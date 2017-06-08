@@ -4,7 +4,7 @@
 #
 # http://shiny.rstudio.com
 #
-
+library(manipulate)
 #library(shiny)
 
 #shinyUI(fluidPage(
@@ -37,7 +37,7 @@ ui <- basicPage(
     mainPanel(
       
       #tableOutput("contents"), 
-      plotOutput("plots",brush = "plot_brush"),
+      plotOutput("plots",brush = "plots"),
       verbatimTextOutput("info")
       
       

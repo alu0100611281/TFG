@@ -4,7 +4,7 @@
 #
 # http://shiny.rstudio.com
 #
-
+library(manipulate)
 #library(shiny)
 
 #shinyServer(function(input, output){
@@ -29,14 +29,19 @@ server <- function(input, output) {
     
    datos <- read.table(inFile$datapath,sep = " ",quote="\"")
    
-   plot(datos,"h", xlab="Cpu", ylab="Tiempo", main="Eficiencia energética")
+   
+ 
+   #plot(datos,"h", xlab="Cpu", ylab="Tiempo", main="Eficiencia energética")
+  
+   imprimir<-datos
+   
    
   
    
    #grafica seleccion
    
-   #output$plot1 <- renderPlot({
-    #plot(mtcars$wt, mtcars$mpg)
+  # output$plot1 <- renderPlot({
+  # plot(mtcars$wt, mtcars$mpg)
    #})
    output$info <- renderText({
      
@@ -44,47 +49,51 @@ server <- function(input, output) {
        if(is.null(e)) return("NULL\n")
        xmin<-round(e$xmin, 1)
        xmax<-round(e$xmax, 1)
-       ymax<-round(e$ymax, 1)
-       ymin<-round(e$ymin, 1)
+       #ymax<-round(e$ymax, 1)
+       #ymin<-round(e$ymin, 1)
        
        paste0("xmin=", round(e$xmin, 1), " xmax=", round(e$xmax, 1), 
               " ymin=", round(e$ymin, 1), " ymax=", round(e$ymax, 1))
-       
        matrix(datos)
        
-       View(matrix(datos))
+     
        i<-1
        j<-1
-       c1<-vector()
-       c2<-vector()
-       
-       
+       c1<<-vector()
+       c2<<-vector()
+       z<-1
+   
        for(i in seq_len(nrow(datos))) {
+         
          for(j in seq_len(ncol(datos))){
            if(j<=1){
-             
-             if(((matrix(datos[i,j])>=xmin) && (matrix(datos[i,j])<=xmax)) && ((matrix(datos[i,j+1])>=ymin) && (matrix(datos[i,j+1])<=ymax))){
+             if((matrix(datos[i,j])>=xmin) && (matrix(datos[i,j])<=xmax)){ #&& ((matrix(datos[i,j+1])>=ymin) && (matrix(datos[i,j+1])<=ymax))){
                
-               c1[i]=matrix(datos[i,j])
-               c2[i]=matrix(datos[i,j+1])
+               c1[z]=matrix(datos[i,j])
+               c2[z]=matrix(datos[i,j+1])
+             
+               z=z+1
+                     
              }
              
            }
            
          }
        }
-       plot(c1,c2,xlab="",ylab="",col=3)
        
+       datos2<<-data.frame(c1,c2)
+       
+       #plot(datos2,add=TRUE,"h", xlab="Cpu", ylab="Tiempo", main="Eficiencia energética")
      }
+     
      paste0(
-       "brush: ", xy_range_str(input$plot_brush)
+       "brush: ", xy_range_str(input$plots)
      )
-  
+     imprimir<-datos2
    })
   
-   
-   
-   
+  # plot(datos2,"h", xlab="Cpu", ylab="Tiempo", main="Eficiencia energética")
+
    #plot(datos,"h", xlab="Cpu", ylab="Tiempo", main="Eficiencia energética")
    
    #Seleccion de Graficos
@@ -151,5 +160,12 @@ server <- function(input, output) {
   
 
   })
+  
+  imprimir$plots3<-function(x){
+ 
+   plot(x,add=TRUE,"h", xlab="Cpu", ylab="Tiempo", main="Eficiencia energética")
+  
+    
+  }
   
 }
