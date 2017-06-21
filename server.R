@@ -31,13 +31,17 @@ shinyServer(function(input, output,session){
     
    datos <- read.table(inFile$datapath,sep = " ",quote="\"")
    t<-1
+   z<-1
    
    imprimir(datos)
    #***********fin cargando datos******************************************************************
    
    #***********RANGOS MANUALES******************************************************************
-   value1 <- renderText({ input$captionmin })
-   value2 <- renderText({ input$captionmax })
+   
+     
+   
+  # value1 <- renderText({ input$captionmin })
+   #value2 <- renderText({ input$captionmax })
 
    xmin<<-input$captionmin
    xmax<<-input$captionmax
@@ -50,7 +54,7 @@ shinyServer(function(input, output,session){
           j<-1
           c1<<-vector()
           c2<<-vector()
-          z<-1
+          z=1
 
           for(i in seq_len(nrow(datos))) {
 
@@ -75,6 +79,7 @@ shinyServer(function(input, output,session){
    imprimir(datos2)
    
    }
+   
    #***********FIN RANGOS MANUALES******************************************************************
    
    #**********************Seleccionar rango con slider**************************************************************
@@ -102,7 +107,7 @@ shinyServer(function(input, output,session){
   
    if(val[1]!=MAX$V1 && val[2]!=MIN$V1){
    matrix(datos)
-   View(t)
+   
    t=2
    i<-1
    j<-1
@@ -133,68 +138,69 @@ shinyServer(function(input, output,session){
    imprimir(datos2)
    
    }
+   
  #****************************** fin slider****************************************************************************   
    
  #****************************** SELECCIONAR RANGO CON RATON***********************************************************  
    
   #  #grafica seleccion
-  #
-  # # output$plot1 <- renderPlot({
-  # # plot(mtcars$wt, mtcars$mpg)
-  #  #})
-  #  output$info <- renderText({
-  #
+
+  # output$plot1 <- renderPlot({
+  # plot(mtcars$wt, mtcars$mpg)
+   #})
+  #  info <- renderText({
+  # 
   #    xy_range_str <- function(e) {
   #      if(is.null(e)) return("NULL\n")
   #      xmin<-round(e$xmin, 1)
   #      xmax<-round(e$xmax, 1)
   #      #ymax<-round(e$ymax, 1)
   #      #ymin<-round(e$ymin, 1)
-  #
+  # 
   #      paste0("xmin=", round(e$xmin, 1), " xmax=", round(e$xmax, 1),
   #             " ymin=", round(e$ymin, 1), " ymax=", round(e$ymax, 1))
   #      matrix(datos)
-  #
-  #
+  # 
+  # 
   #      i<-1
   #      j<-1
   #      c1<<-vector()
   #      c2<<-vector()
   #      z<-1
-  #
+  # 
   #      for(i in seq_len(nrow(datos))) {
-  #
+  # 
   #        for(j in seq_len(ncol(datos))){
   #          if(j<=1){
   #            if((matrix(datos[i,j])>=xmin) && (matrix(datos[i,j])<=xmax)){ #&& ((matrix(datos[i,j+1])>=ymin) && (matrix(datos[i,j+1])<=ymax))){
-  #
+  # 
   #              c1[z]=matrix(datos[i,j])
   #              c2[z]=matrix(datos[i,j+1])
-  #
+  # 
   #              z=z+1
-  #
+  # 
   #            }
-  #
+  # 
   #          }
-  #
+  # 
   #        }
   #      }
-  #
+  # 
   #      datos2<<-data.frame(c1,c2)
-  #
+  # 
   #      plot(datos2,add=TRUE,"h", xlab="Cpu", ylab="Tiempo", main="Eficiencia energética")
   #    }
-  #
+  # 
   #    paste0(
   #      "brush: ", xy_range_str(input$plots),resetOnNew=TRUE
   #    )
-  #    imprimir<-datos2
+  #   # imprimir<-datos2
   #  })
-  #
+  # 
   # # plot(datos2,"h", xlab="Cpu", ylab="Tiempo", main="Eficiencia energética")
-  #
+  # 
   #  #plot(datos,"h", xlab="Cpu", ylab="Tiempo", main="Eficiencia energética")
-     #value1 <- renderText({ input$MIN})
+  # value1 <- renderText({ input$MIN})
  #****************************** FIN SELECCIONAR RANGO CON RATON***********************************************************   
      
     
@@ -304,7 +310,13 @@ shinyServer(function(input, output,session){
 
 
 
-
+   #*****************************Formulas*****************************************************
+   
+   expresion<-input$formulas
+   View(expresion)
+   
+   
+   #***************************fin formulas**********************************************
   })
   #********************************Imprimir***************************************************
   imprimir<-function(x){
@@ -313,4 +325,6 @@ shinyServer(function(input, output,session){
   
   }
   #********************************fin Imprimir***********************************************
+  
+ 
 })
