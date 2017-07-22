@@ -1,4 +1,3 @@
-
 # This is the server logic for a Shiny web application.
 # You can find out more about building applications with Shiny here:
 #
@@ -6,6 +5,7 @@
 #
 library(manipulate)
 library(shiny)
+
 
 shinyServer(function(input, output, session) {
   #1
@@ -74,8 +74,6 @@ shinyServer(function(input, output, session) {
     })
     
     output$plots <- renderPlot({
-      
-      
       if (v$doPlot == FALSE)
         return()
       
@@ -100,6 +98,7 @@ shinyServer(function(input, output, session) {
             matrix(datos)
             
             t = 2
+            
             i <- 1
             j <- 1
             c1 <<- vector()
@@ -148,6 +147,7 @@ shinyServer(function(input, output, session) {
           matrix(datos)
           
           t = 2
+          
           i <- 1
           j <- 1
           c1 <<- vector()
@@ -157,7 +157,8 @@ shinyServer(function(input, output, session) {
           for (i in seq_len(nrow(datos))) {
             for (j in seq_len(ncol(datos))) {
               if (j <= 1) {
-                if ((matrix(datos[i, j]) >= xmin) && (matrix(datos[i, j]) <= xmax)) {
+                if ((matrix(datos[i, j]) >= xmin) &&
+                    (matrix(datos[i, j]) <= xmax)) {
                   c1[z] = matrix(datos[i, j])
                   c2[z] = matrix(datos[i, j + 1])
                   
@@ -173,14 +174,14 @@ shinyServer(function(input, output, session) {
           datos2 <<- data.frame(c1, c2)
           
           
-          if (input$tabset == "Editar"){
+          if (input$tabset == "Editar") {
             # observe(updateNumericInput(session, "captionmin", value = val[1]))
-            texty<-input$Texty
-            textx<-input$Textx
-     
-              # observe(updateTextAreaInput(session,"plots",ylab=texty))
-              # observe(updateTextAreaInput(session,"plots",xlab=textx))
-           
+            texty <- input$Texty
+            textx <- input$Textx
+            
+            # observe(updateTextAreaInput(session,"plots",ylab=texty))
+            # observe(updateTextAreaInput(session,"plots",xlab=textx))
+            
           }
           
         }
@@ -191,8 +192,8 @@ shinyServer(function(input, output, session) {
           if (t == 2) {
             hist(
               datos2$c2,
-               xlab = input$Textx,
-               ylab = input$Texty,
+              xlab = input$Textx,
+              ylab = input$Texty,
               main = "Histograma"
             )
           }
@@ -200,17 +201,19 @@ shinyServer(function(input, output, session) {
           #   hist(datos3$c4,xlab="Cpu", ylab="Tiempo",main = "Histograma")
           #   }
           if (t == 1) {
-            hist(datos$V2,
-                 xlab = input$Textx,
-                 ylab = input$Texty,
-                 main = "Histograma")
+            hist(
+              datos$V2,
+              xlab = input$Textx,
+              ylab = input$Texty,
+              main = "Histograma"
+            )
           }
         }
         if (Grafi == "Grafico de Dispersion") {
           if (t == 2) {
             plot(datos2,
-                xlab<-input$Textx,
-                ylab<-input$Texty,
+                 xlab <- input$Textx,
+                 ylab <- input$Texty,
                  
                  main = "Eficiencia energética")
           }
@@ -220,17 +223,19 @@ shinyServer(function(input, output, session) {
           if (t == 1)
           {
             plot(datos,
-                 xlab<-input$Textx,
-                 ylab<-input$Texty,
+                 xlab <- input$Textx,
+                 ylab <- input$Texty,
                  main = "Eficiencia energética")
           }
         }
         if (Grafi == "Diagrama de caja") {
           if (t == 2) {
-            boxplot(datos2,
-                    main = "Boxplot",
-                    xlab = input$Textx,
-                    ylab = input$Texty)
+            boxplot(
+              datos2,
+              main = "Boxplot",
+              xlab = input$Textx,
+              ylab = input$Texty
+            )
             col = terrain.colors(3)
           }
           # if(t==3){
@@ -239,10 +244,12 @@ shinyServer(function(input, output, session) {
           # }
           if (t == 1)
           {
-            boxplot(datos,
-                    main = "Boxplot",
-                    xlab = input$Textx,
-                    ylab = input$Texty)
+            boxplot(
+              datos,
+              main = "Boxplot",
+              xlab = input$Textx,
+              ylab = input$Texty
+            )
             col = terrain.colors(3)
           }
         }
@@ -285,117 +292,252 @@ shinyServer(function(input, output, session) {
           #   barplot(datos3$c3,xlab="Cpu", ylab="Tiempo", main = "Gráfico de barras")
           # }
           if (t == 1) {
-            barplot(datos$V1,
-                    xlab = input$Textx,
-                    ylab = input$Texty,
-                    main = "Gráfico de barras")
+            barplot(
+              datos$V1,
+              xlab = input$Textx,
+              ylab = input$Texty,
+              main = "Gráfico de barras"
+            )
           }
         }
         
         #**********************************Fin Seleccion de Graficos***************************************************************
         #imprimir(datos2)
-      })
-    })#4
-    #**********************************fin control de grafica********************************************
-    
-    
-    
-    
-    #**********************************Seleccion  de formula******************************************************************
-    
-    # l <- reactiveValues(duPlot = FALSE)
-    # 
-    # observeEvent(input$ca, {
-    #   # 0 will be coerced to FALSE
-    #   # 1+ will be coerced to TRUE
-    #   l$duPlot <- input$ca
-    # 
-    # })
-    # 
-    # # observeEvent(input$tabset, {
-    # #   l$duPlot <- FALSE
-    # #   
-    # # })
-    # 
-    #  output$plots <- renderPlot({
-    #   
-    #   
-    #   if (l$duPlot == FALSE)
-    #     return()
-    #   
-    #   
-    #   isolate({
-        expresion <- input$formulas
-        d <- nchar(expresion)
-    
-    
-        expresion_split = strsplit(expresion, split = "") #dividims la formula en individual para tratarla mejor
-        expresion_columnas = data.frame(unlist(expresion_split))
-    
-    f <- vector()
-    f <- expresion_columnas
-    i <- 1
-    
-    if (nchar(expresion) >= 1) {
-      for (i in nchar(expresion)) {
-        if (f[i, ] == "y")
-          y = y + 1
+        #}) #isolate
+        #})#4
+        #**********************************fin control de grafica********************************************
         
         
-        if (f[i, ] == "x")
-          x = x + 1
-      }
-      
-      if (t == 1) {
-        # if(f[1,]=="y" && (f[3,]>=65 && f[3,]<=90)   && f[4,]== "x" && (f[6,]>=65 && f[6,]<=90)){
-        # if(f[1,]=="y" && f[4,]== "x"){
-        if (y == 1 && x == 1) {
-          y <- datos$V2
-          x <- datos$V1
-          regresion <- lm(y ~ x, datos)
-          abline(regresion)
+        
+        
+        #**********************************Seleccion  de formula******************************************************************
+        
+        expresion <- input$Ecuacion
+        
+        if (expresion == "y=Ax+B" || expresion == "y=A+Bx") {
+          if (t == 1) {
+            y <- datos$V2
+            x <- datos$V1
+            regresion <- lm(y ~ x, datos)
+            summary(regresion)
+            abline(regresion)
+            
+          }
+          else{
+            y <- datos2$c2
+            x <- datos2$c1
+            regresion <- lm(y ~ x, datos2)
+            summary(regresion)
+            abline(regresion)
+          }
+          output$modelSummary <- renderPrint({
+            summary(regresion)
+          })
+          
         }
-      }
+        
+        if (expresion == "y=Ax+Bx^2+C") {
+          if (t == 1) {
+            y <- datos$V2
+            x <- datos$V1
+            
+            regresion <- lm(y ~ x + I(x ^ 2), data = datos)
+            summary(regresion)
+            curve(
+              regresion$coefficient[1] + regresion$coefficient[2] * x + regresion$coefficient[3] *
+                x ^ 2,
+              add = T,
+              col = "red"
+            )
+            
+            
+          }
+          else{
+            y <- datos2$c2
+            x <- datos2$c1
+            
+            regresion <- lm(y ~ x + I(x ^ 2), data = datos2)
+            summary(regresion)
+            curve(
+              regresion$coefficient[1] + regresion$coefficient[2] * x + regresion$coefficient[3] *
+                x ^ 2,
+              add = T,
+              col = "red"
+            )
+          }
+          output$modelSummary <- renderPrint({
+            summary(regresion)
+          })
+        }
+        if (expresion == "y=Ax+Bx^2+Cx^3+D") {
+          if (t == 1) {
+            y <- datos$V2
+            x <- datos$V1
+            
+            regresion <-
+              lm(y ~ x + I(x ^ 2) + I(x ^ 3), data = datos)
+            summary(regresion)
+            curve(
+              regresion$coefficient[1] + regresion$coefficient[2] * x + regresion$coefficient[3] *
+                x ^ 2 + regresion$coefficient[4] * x ^ 3,
+              add = T,
+              col = "red"
+            )
+            
+            
+          }
+          else{
+            y <- datos2$c2
+            x <- datos2$c1
+            regresion <-
+              lm(y ~ x + I(x ^ 2) + I(x ^ 3), data = datos2)
+            summary(regresion)
+            curve(
+              regresion$coefficient[1] + regresion$coefficient[2] * x + regresion$coefficient[3] *
+                x ^ 2 + regresion$coefficient[4] * x ^ 3,
+              add = T,
+              col = "red"
+            )
+          }
+          output$modelSummary <- renderPrint({
+            summary(regresion)
+          })
+        }
+        if (expresion == "y=Ax+Bx^2+Cx^3+Dx^4+E") {
+          if (t == 1) {
+            y <- datos$V2
+            x <- datos$V1
+            regresion <-
+              lm(y ~ x + I(x ^ 2) + I(x ^ 3) + I(x ^ 4), datos)
+            summary(regresion)
+            curve(
+              regresion$coefficient[1] + regresion$coefficient[2] * x + regresion$coefficient[3] *
+                x ^ 2 + regresion$coefficient[4] * x ^ 3 + regresion$coefficient[5] * x ^
+                4,
+              add = T,
+              col = "red"
+            )
+          }
+          else{
+            y <- datos2$c2
+            x <- datos2$c1
+            regresion <-
+              lm(y ~ x + I(x ^ 2) + I(x ^ 3) + I(x ^ 4), datos2)
+            summary(regresion)
+            curve(
+              regresion$coefficient[1] + regresion$coefficient[2] * x + regresion$coefficient[3] *
+                x ^ 2 + regresion$coefficient[4] * x ^ 3 + regresion$coefficient[5] * x ^
+                4,
+              add = T,
+              col = "red"
+            )
+          }
+          output$modelSummary <- renderPrint({
+            summary(regresion)
+          })
+        }
+        if (expresion == "y=A*ln(x)+B" || expresion == "y=A+B*ln(x)") {
+          if (t == 2) {
+            y <- datos$V2
+            x <- datos$V1
+            tras <- log(datos$V1)
+            regresion <- lm(y ~ tras, datos)
+            summary(regresion)
+            curve(
+              regresion$coefficient[1] + regresion$coefficient[2] * log(x),
+              add = T,
+              col = "violet"
+            )
+          }
+          else{
+            y <- datos2$c2
+            x <- datos2$c1
+            tras <- log(datos$c1)
+            regresion <- lm(y ~ tras, datos2)
+            summary(regresion)
+            curve(
+              regresion$coefficient[1] + regresion$coefficient[2] * log(x),
+              add = T,
+              col = "violet"
+            )
+          }
+          output$modelSummary <- renderPrint({
+            summary(regresion)
+          })
+        }
+        if (expresion == "y=A^x+B" || expresion == "y=Ax+ln(B)") {
+          if (t == 2) {
+            y <- datos$V2
+            x <- datos$V1
+            tras <- log(datos$V2)
+            regresion <- lm(tras ~ x, data = datos)
+            summary(regresion)
+            curve(
+              exp(regresion$coefficient[1]) * exp(regresion$coefficient[2] * x),
+              add = T,
+              col = "orange"
+            )
+          }
+          else{
+            y <- datos2$c2
+            x <- datos2$c1
+            tras <- log(datos$c2)
+            regresion <- lm(tras ~ x, data = datos2)
+            summary(regresion)
+            curve(
+              exp(regresion$coefficient[1]) * exp(regresion$coefficient[2] * x),
+              add = T,
+              col = "orange"
+            )
+          }
+          output$modelSummary <- renderPrint({
+            summary(regresion)
+          })
+        }
+        
+        if (expresion == "ln(y)=(ln(A)*x)+ln(B)" ||
+            expresion == "y=A^x*B") {
+          if (t == 2) {
+            y <- datos$V2
+            x <- datos$V1
+            tras <- log(datos$V2)
+            regresion <- lm(tras ~ x, data = datos)
+            summary(regresion)
+            curve(
+              exp(regresion$coefficient[1]) * exp(regresion$coefficient[2]) ^ x,
+              add = T,
+              col = "gray"
+            )
+          }
+          else{
+            y <- datos2$c2
+            x <- datos2$c1
+            tras <- log(datos$c2)
+            regresion <- lm(tras ~ x, data = datos2)
+            summary(regresion)
+            curve(
+              exp(regresion$coefficient[1]) * exp(regresion$coefficient[2]) ^ x,
+              add = T,
+              col = "gray"
+            )
+          }
+          output$modelSummary <- renderPrint({
+            summary(regresion)
+          })
+        }
+        
+        
+        
+        
       
-      else{
-        y <- datos2$c2
-        x <- datos2$c1
-        regresion <- lm(y ~ x, datos2)
-        abline(regresion)
-      }
-    }
-    # residuos <- rstandard(regresion)
-    # valores.ajustados <- fitted(regresion)
-    # View(residuos)
-    # View(valores.ajustados)
-    #  summary(regresion)$call
-    # coeficiente<-coef(regresion)
-    # View(coeficiente)
-    # regresion$coefficients
-    # str(summary(regresion))
-    
-    #qqnorm(residuos)
-    #qqline(residuos)
-      
-    #   })
-    # })
+      })#isolate
+    })#4
+   
     #***************************fin formulas***************************************************
     
-    #**************************boton reset*****************************************************
     
-    
-    
-    #*************************fin boton reset**************************************************
   })#3
-  #********************************Imprimir***************************************************
-  # imprimir <- function(x) {
-  #   plot(x,
-  #        xlab ,
-  #        ylab ,
-  #        main = "Eficiencia energética")
-  #   
-  # }
-  #********************************fin Imprimir***********************************************
+ 
   
   
 })#1
