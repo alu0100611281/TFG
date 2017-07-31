@@ -1,8 +1,11 @@
-# This is the user-interface definition of a Shiny web application.
-# You can find out more about building applications with Shiny here:
-#
-# http://shiny.rstudio.com
-#
+################################################################################################
+######                                                                                     #####
+######                              TRABAJO FIN DE GRADO                                   #####
+######            Eficiencia Energetica en sistemas de cómputo de altas prestaciones       #####
+######                           Jose Luis González Hernández                              #####
+######                                                                                     #####
+################################################################################################
+
 library(manipulate)
 library(shiny)
 library(shinythemes)
@@ -22,7 +25,7 @@ shinyUI(
       )),
     headerPanel(
       h1(
-        "Eficiencia energética en sistemas de cómputo de altas prestaciones",
+        "Visualización de datos de eficiencia energética en sistemas de cómputo de altas prestaciones",
         style = "font-family: 'Lobster', cursive;
         font-weight: 500; line-height: 1.1;
         color: #4d3a7d;"
@@ -42,7 +45,7 @@ shinyUI(
     sidebarLayout(
       sidebarPanel(
         #SELECCION DE TIPO DE GRAFICO
-        selectInput("Graficos", "Seleciones una Tabla:",
+        selectInput("Graficos", "Selecione una Grafica:",
                     list(
                       `Graficos` = c(
                         "Grafico de Dispersion",
